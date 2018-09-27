@@ -15,7 +15,7 @@ import org.apache.commons.csv.CSVRecord;
 public class CSVUtility {
 
 	public static void main(String[] args) throws IOException {
-		String lines = calculateCommission("", "");	
+		String lines = calculateCommission("", "", 0.125);	
 	}
 	
 	public String getMessage(String name) {
@@ -24,7 +24,7 @@ public class CSVUtility {
 	}
 	
 	@SuppressWarnings({ "null", "resource" })
-	public static String calculateCommission(String filePath, String destinationPath) {
+	public static String calculateCommission(String filePath, String destinationPath, double rate) {
 		String result = "";
 		String SAMPLE_CSV_FILE_PATH = "";
 		if (filePath == "") {
@@ -38,7 +38,7 @@ public class CSVUtility {
 					.withFirstRecordAsHeader()
 					.withIgnoreHeaderCase()
 					.withTrim());
-			generateCSV(destinationPath, csvParser);
+			generateCSV(destinationPath, csvParser, rate);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class CSVUtility {
 	}
 	
 	@SuppressWarnings("resource")
-	private static void generateCSV(String destinationPath, CSVParser csvParser) {
+	private static void generateCSV(String destinationPath, CSVParser csvParser, double rate) {
 		String SAMPLE_CSV_FILE_PATH = "";
 		if (destinationPath == "") {
 			SAMPLE_CSV_FILE_PATH = "C:/temp/MOBILEAPP_cal.csv";			
@@ -70,7 +70,7 @@ public class CSVUtility {
                 String userJob = csvRecord.get(4);
                 String userRegisCount = csvRecord.get(5);
                 
-                double commission = Integer.parseInt(userRegisCount) * 0.25;
+                double commission = Integer.parseInt(userRegisCount) * rate;
                
                 csvPrinter.printRecord(userPhoneNo, userIdNo, userFirstName, 
                 		userLastName, userJob, userRegisCount, commission);
